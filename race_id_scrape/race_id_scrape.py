@@ -42,8 +42,9 @@ time.sleep(2)
 
 # 期間をselectする
 # 2022年1月から2022年12月までを選択する optionの部分で2~13で月を指定
+# Xpathのoption4に設定し2020年を指定する
 start_year = webdriver.find_element(By.XPATH,
-                                    '//*[@id="db_search_detail_form"]/form/table/tbody/tr[3]/td/select[1]/option[2]')
+                                    '//*[@id="db_search_detail_form"]/form/table/tbody/tr[3]/td/select[1]/option[4]')
 start_year.click()
 time.sleep(2)
 
@@ -52,6 +53,7 @@ start_month = webdriver.find_element(By.XPATH,
 start_month.click()
 time.sleep(1)
 
+# Xpathのoption2に設定し2022年を指定する
 end_year = webdriver.find_element(By.XPATH,
                                   '//*[@id="db_search_detail_form"]/form/table/tbody/tr[3]/td/select[3]/option[2]')
 end_year.click()
@@ -121,12 +123,32 @@ for page in range(0, pages, 1):
     # ページ遷移 pagesが2以上かを判定し１なら遷移しない
     if pages != 1:
         if page == 0:
+            try:
+                ad = webdriver.find_element(By.XPATH, '//*[@id="gn_interstitial_close_icon"]')
+                ad.click()
+
+            except:
+                pass
+
             elem = webdriver.find_element(By.XPATH, '//*[@id="contents_liquid"]/div[2]/a')
+            # 600px下にスクロールする 100件表示しているときは下に下げないとクリックできない
+            webdriver.execute_script("window.scrollTo(0, 1000)")
+            time.sleep(2)
             elem.click()
             time.sleep(5)
 
         else:
+            try:
+                ad = webdriver.find_element(By.XPATH, '//*[@id="gn_interstitial_close_icon"]')
+                ad.click()
+
+            except:
+                pass
+
             elem = webdriver.find_element(By.XPATH, '//*[@id="contents_liquid"]/div[2]/a[2]')
+            # 600px下にスクロールする 100件表示しているときは下に下げないとクリックできない
+            webdriver.execute_script("window.scrollTo(0, 1000)")
+            time.sleep(2)
             elem.click()
             time.sleep(5)
 
@@ -135,6 +157,6 @@ print(race_id_list)
 # race_id_listをpickleファイルに
 race_id_pickle = pd.DataFrame(race_id_list)
 race_id_pickle.columns = ["race_id"]
-race_id_pickle.to_pickle("race_id_list).pickle")
+race_id_pickle.to_pickle("race_id_list.pickle")
 
 webdriver.quit()
