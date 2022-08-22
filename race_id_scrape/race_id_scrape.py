@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
@@ -64,7 +65,7 @@ time.sleep(1)
 # 競馬場を選択
 # 1~10のリストを作成
 list_ = []
-for i in range(1, 2):
+for i in range(1, 11):
     list_.append(str(i).zfill(2))
 
 for i in list_:
@@ -130,5 +131,10 @@ for page in range(0, pages, 1):
             time.sleep(5)
 
 print(race_id_list)
+
+# race_id_listをpickleファイルに
+race_id_pickle = pd.DataFrame(race_id_list)
+race_id_pickle.columns = ["race_id"]
+race_id_pickle.to_pickle("race_id_list).pickle")
 
 webdriver.quit()
